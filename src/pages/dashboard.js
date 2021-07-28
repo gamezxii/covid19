@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Container from "@material-ui/core/Container";
 import Card from "../components/Card";
 import Paper from "@material-ui/core/Paper";
@@ -7,7 +7,7 @@ import { makeStyles, createStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import ContentLoader from "react-content-loader";
 import Typography from "@material-ui/core/Typography";
-
+import Carddate from "../components/Carddate";
 const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
@@ -36,6 +36,8 @@ const apicovid =
 const Dashboard = () => {
   const classes = useStyles();
   const [covid, setCovid] = useState("");
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
 
   const MyLoader = () => (
     <ContentLoader width={400} viewBox="0 0 400 227">
@@ -44,13 +46,33 @@ const Dashboard = () => {
     </ContentLoader>
   );
 
-  const feedCovid19 = async () => {
+  function reverseString(str) {
+    return str.split("-").reverse().join("-");
+  }
+
+  const fetchCovid = useRef(() => {});
+
+  fetchCovid.current = async () => {
     const resultObject = await axios.get(apicovid);
     const objectData = await resultObject.data;
     setCovid(objectData);
+    let ndate = objectData.UpdateDate.substring(0, 10).replaceAll("/", "-");
+    let ntime = objectData.UpdateDate.substring(
+      objectData.UpdateDate.length / 2 + 2,
+      objectData.UpdateDate.length
+    );
+    let currentDate = reverseString(ndate);
+    const date = new Date(currentDate);
+    const result = date.toLocaleDateString("th-TH", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+    setDate(result);
+    setTime(ntime);
   };
   useEffect(() => {
-    feedCovid19();
+    fetchCovid.current();
   }, []);
   return (
     <React.Fragment>
@@ -62,11 +84,16 @@ const Dashboard = () => {
             component="h2"
             style={{ color: "#fff" }}
           >
-            Coronavirus (COVID-19) Dashboard {covid && covid.country}{" "}
-            {covid && covid.UpdateDate}
+            สถานการณ์ในประเทศไทย
           </Typography>
           <Grid container spacing={1}>
-            <Grid item xs={6} sm={6} md={6}>
+            <Grid item xs={12} sm={6}>
+              <Carddate date={covid && date} />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Carddate date={covid && `เวลา ${time} น.`} />
+            </Grid>
+            <Grid item xs={12} sm={6} md={6}>
               {covid === "" ? (
                 <MyLoader />
               ) : (
@@ -77,7 +104,7 @@ const Dashboard = () => {
                 />
               )}
             </Grid>
-            <Grid item xs={6} sm={6} md={6}>
+            <Grid item xs={12} sm={6} md={6}>
               {covid === "" ? (
                 <MyLoader />
               ) : (

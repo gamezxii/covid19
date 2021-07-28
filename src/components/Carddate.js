@@ -3,7 +3,7 @@ import { makeStyles, createStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import { numberWithCommas } from "../utils";
+
 const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
@@ -11,24 +11,21 @@ const useStyles = makeStyles((theme) =>
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      [theme.breakpoints.down("sm")]: {
-        height: "auto",
-      },
     },
   })
 );
 
-export default function ImgMediaCard({ title, number, color }) {
+export default function ImgMediaCard({ date }) {
   const classes = useStyles();
 
   return (
-    <Card className={classes.root} style={{ background: color, color: "#fff" }}>
+    <Card
+      className={classes.root}
+      style={{ background: "#3f51b5", color: "#fff" }}
+    >
       <CardContent>
-        <Typography gutterBottom variant="h5" component="h2">
-          {numberWithCommas(number)}
-        </Typography>
         <Typography gutterBottom variant="body2" >
-          {title}
+          {date}
         </Typography>
       </CardContent>
     </Card>
