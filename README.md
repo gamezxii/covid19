@@ -1,7 +1,7 @@
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-## Try to demo https://covid19-r887ql8k7-gamezxii.vercel.app/
+## Try to demo https://covid19-gamezxii.vercel.app/
 
 ## Available Scripts
 
