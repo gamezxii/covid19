@@ -27,6 +27,18 @@ const useStyles = makeStyles((theme) =>
         height: "100%",
       },
     },
+    mobile: {
+      display:'none',
+      [theme.breakpoints.down("sm")]: {
+        display: "block",
+      },
+    },
+    desktop: {
+      display:'block',
+      [theme.breakpoints.down("sm")]: {
+        display: "none",
+      },
+    },
   })
 );
 
@@ -40,10 +52,20 @@ const Dashboard = () => {
   const [time, setTime] = useState("");
 
   const MyLoader = () => (
-    <ContentLoader width={400} viewBox="0 0 400 227">
-      {/* Only SVG shapes */}
-      <rect x="0" y="0" rx="5" ry="5" width="400" height="227" />
-    </ContentLoader>
+    <div>
+      <div className={classes.mobile}>
+        <ContentLoader width={300} viewBox="0 0 400 227">
+          {/* Only SVG shapes */}
+          <rect x="0" y="0" rx="5" ry="5" width="300" height="227" />
+        </ContentLoader>
+      </div>
+      <div className={classes.desktop}>
+        <ContentLoader width={400} viewBox="0 0 400 227">
+          {/* Only SVG shapes */}
+          <rect x="0" y="0" rx="5" ry="5" width="400" height="227" />
+        </ContentLoader>
+      </div>
+    </div>
   );
 
   function reverseString(str) {
